@@ -62,7 +62,6 @@ export const Wallet = () => {
       const { tokenBalance, contractAddress } = token;
       const metadata = await alchemy.core.getTokenMetadata(contractAddress);
 
-      //   console.log(metadata);
       const balance =
         Number(tokenBalance) / Math.pow(10, metadata.decimals ?? 0);
 
@@ -73,8 +72,6 @@ export const Wallet = () => {
         name: metadata.name,
         logo: metadata.logo,
       });
-
-      console.log(tokens);
     }
     setBalances(tokens);
   };
