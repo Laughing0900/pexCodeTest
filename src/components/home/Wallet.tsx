@@ -1,11 +1,12 @@
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/button";
-import { Alchemy, Network, TokenBalancesResponseErc20 } from "alchemy-sdk";
-import { FormEvent, useMemo, useState } from "react";
+import { Alchemy, Network } from "alchemy-sdk";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { isAddress } from "ethers";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
+
 // apiKey should store in .env
 const config = {
   apiKey: "fRnoP5jll4MdDRRrdmrrtN_tWHXcO89p",
@@ -13,7 +14,7 @@ const config = {
 };
 const alchemy = new Alchemy(config);
 
-const ADDS = "0xd8da6bf26964af9d7eed9e03e53415d37aa96045";
+const TEST_ADDRESS = "0xB38e8c17e38363aF6EbdCb3dAE12e0243582891D";
 
 type IFormInput = {
   address: string;
@@ -38,6 +39,7 @@ export const Wallet = () => {
   } = useForm<IFormInput>();
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    setBalances(null);
     const { address } = data;
 
     if (!isAddress(address)) {
@@ -78,7 +80,7 @@ export const Wallet = () => {
   };
 
   return (
-    <div className="backdrop-blur bg-black/20 text-white rounded-md shadow-md w-full max-w-xl min-h-40 px-5 py-5 space-y-5 divide-y-2 divide-gray-300">
+    <div className="backdrop-blur bg-black/20 text-white rounded-md shadow-md w-full max-w-xl min-h-40 px-5 py-5 space-y-5 divide-y-2 divide-gray-500">
       <div>
         <form onSubmit={handleSubmit(onSubmit)} className="flex gap-4">
           <Input {...register("address")} placeholder="0x" />
@@ -90,14 +92,14 @@ export const Wallet = () => {
       </div>
 
       {isSubmitting && (
-        <div className="flex flex-col px-4 divide-y-2">
+        <div className="flex flex-col px-4 divide-y-2 divide-gray-500">
           {new Array(3).fill(0).map((_, idx) => {
             return <WalletSkeleton key={idx} />;
           })}
         </div>
       )}
       {!!balances && (
-        <div className="flex flex-col px-4 divide-y-2">
+        <div className="flex flex-col px-4 divide-y-2 divide-gray-500">
           {balances.map((token, idx) => {
             return (
               <div
